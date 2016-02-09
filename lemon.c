@@ -1484,7 +1484,7 @@ static void handle_lang_option(char *z){
   } else if (!strcasecmp(z, "C")) {
     target_lang = LANG_C;
   } else {
-    fprintf(stderr, "-l%s: supported languages are C, PHP\n", z);
+    fprintf(stderr, "-L%s: supported languages are C, PHP\n", z);
     exit(1);
   }
 }
@@ -1518,7 +1518,7 @@ int main(int argc, char **argv)
     {OPT_FLAG, "g", (char*)&rpflag, "Print grammar without actions."},
     {OPT_FSTR, "I", 0, "Ignored.  (Placeholder for '-I' compiler options.)"},
     {OPT_FLAG, "m", (char*)&mhflag, "Output a makeheaders compatible file."},
-    {OPT_FLAG, "L", (char*)handle_lang_option, "select target language."},
+    {OPT_FSTR, "L", (char*)handle_lang_option, "select target language."},
     {OPT_FLAG, "l", (char*)&nolinenosflag, "Do not print #line statements."},
     {OPT_FSTR, "O", 0, "Ignored.  (Placeholder for '-O' compiler options.)"},
     {OPT_FLAG, "p", (char*)&showPrecedenceConflict,
@@ -3231,7 +3231,7 @@ PRIVATE void tplt_xfer(char *name, FILE *in, FILE *out, int *lineno)
 ** a pointer to the opened file. */
 PRIVATE FILE *tplt_open(struct lemon *lemp)
 {
-  static char templatename[];
+  static char *templatename;
   char buf[1000];
   FILE *in;
   char *tpltname;
