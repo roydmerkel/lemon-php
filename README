@@ -6,7 +6,7 @@ parser for the grammar described in a .y file.
 Usage:
 
  cc -o lemon lemon.c
- lemon -lPHP my.y
+ lemon -LPHP my.y
 
 This will output my.php, which contains a PHP class that implements your parser.
 Usage is along the lines of:
