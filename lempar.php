@@ -5,6 +5,37 @@
 /* First off, code is included that follows the "include" declaration
 ** in the input grammar file. */
 %%
+/* The following structure represents a single element of the
+** parser's stack.  Information stored includes:
+**
+**   +  The state number for the parser at this level of the stack.
+**
+**   +  The value of the token stored at this level of the stack.
+**      (In other words, the "major" token.)
+**
+**   +  The semantic value stored at this level of the stack.  This is
+**      the information used by the action routines in the grammar.
+**      It is sometimes called the "minor" token.
+*/
+class yyStackEntry {
+  var /* YYACTIONTYPE */ $stateno;  /* The state-number */
+  var /* YYCODETYPE */ $major;      /* The major token value.  This is the code
+                                    ** number for the token at this stack level */
+  var /* YYMINORTYPE */ $minor;     /* The user-supplied minor token value.  This
+                                    ** is the value of the token  */
+};
+
+/* The state of the parser is completely contained in an instance of
+** the following structure */
+class yyParser {
+  var /* int */ $yyidx;                    /* Index of top element in stack */
+  var /* int */ $yyidxMax;                 /* Maximum value of yyidx */
+  var /* int */ $yyerrcnt;                 /* Shifts left before out of the error */
+  // ParseARG_SDECL                        /* A place to hold %extra_argument */
+  var /* yyStackEntry */ $yystack = array(
+       /* of YYSTACKDEPTH elements */
+       ); /* The parser's stack */
+
 /* Next is all token values, in a form suitable for use by makeheaders.
 ** This section will be null unless lemon is run with the -m switch.
 */
@@ -123,38 +154,6 @@ static $yyzerominor = 0;
 static $yyFallback = array(
 %%
 );
-
-/* The following structure represents a single element of the
-** parser's stack.  Information stored includes:
-**
-**   +  The state number for the parser at this level of the stack.
-**
-**   +  The value of the token stored at this level of the stack.
-**      (In other words, the "major" token.)
-**
-**   +  The semantic value stored at this level of the stack.  This is
-**      the information used by the action routines in the grammar.
-**      It is sometimes called the "minor" token.
-*/
-class yyStackEntry {
-  var /* YYACTIONTYPE */ $stateno;  /* The state-number */
-  var /* YYCODETYPE */ $major;      /* The major token value.  This is the code
-                                    ** number for the token at this stack level */
-  var /* YYMINORTYPE */ $minor;     /* The user-supplied minor token value.  This
-                                    ** is the value of the token  */
-};
-
-/* The state of the parser is completely contained in an instance of
-** the following structure */
-class yyParser {
-  var /* int */ $yyidx;                    /* Index of top element in stack */
-  var /* int */ $yyidxMax;                 /* Maximum value of yyidx */
-  var /* int */ $yyerrcnt;                 /* Shifts left before out of the error */
-  // ParseARG_SDECL                        /* A place to hold %extra_argument */
-  var /* yyStackEntry */ $yystack = array(
-       /* of YYSTACKDEPTH elements */
-       ); /* The parser's stack */
-};
 
 var $yyTraceFILE = null;
 var $yyTracePrompt = null;
